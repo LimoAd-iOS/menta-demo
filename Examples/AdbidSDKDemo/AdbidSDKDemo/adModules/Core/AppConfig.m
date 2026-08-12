@@ -71,6 +71,7 @@ static NSString *const kLegacySelectedPlatformsKey = @"flatform";
     EnvironmentType env = [[NSUserDefaults standardUserDefaults] integerForKey:kEnvironmentKey];
     switch (env) {
         case EnvironmentType_Test_10011:
+        case EnvironmentType_Test_10004:
             return env;
         default:
             return EnvironmentType_Test_10011;
@@ -80,6 +81,7 @@ static NSString *const kLegacySelectedPlatformsKey = @"flatform";
 + (NSString *)currentEnvironmentDisplayText {
     switch ([self currentEnv]) {
         case EnvironmentType_Test_10011:     return @"10011";
+        case EnvironmentType_Test_10004:     return @"10004";
       
         default:                             return @"10011";
     }
@@ -97,6 +99,7 @@ static NSString *const kLegacySelectedPlatformsKey = @"flatform";
 + (NSArray<NSString *> *)defaultPlatformsForCurrentEnvironment {
     switch ([self currentEnv]) {
         case EnvironmentType_Test_10011:
+        case EnvironmentType_Test_10004:
        
         default:
             return @[];
@@ -168,6 +171,7 @@ static NSString *const kLegacySelectedPlatformsKey = @"flatform";
 + (NSString *)appID {
     switch ([self currentEnv]) {
         case EnvironmentType_Test_10011:     return @"10011";
+        case EnvironmentType_Test_10004:     return @"10004";
         default: return @"10011";
     }
 }
@@ -182,6 +186,11 @@ static NSString *const kLegacySelectedPlatformsKey = @"flatform";
                     return @"MTc3OTcwNjU3MTk2OA=="; // Ezviz
                 }
                 return @"MTc1MzM0MzU1MzkzOQ==";
+            case EnvironmentType_Test_10004:
+            if ([platform isEqualToString:@"LM"]) {
+                return @"MTc4NjUzMDM0OTQ4OA=="; // LM
+            }
+            return @"MTc1MzM0MzU1MzkzOQ==";
              default: return @"MTc1MzM0MzU1MzkzOQ==";
     }
 }

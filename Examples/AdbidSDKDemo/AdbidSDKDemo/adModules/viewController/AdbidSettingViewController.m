@@ -378,15 +378,21 @@
     // 弹出选择环境的弹窗
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请选择环境" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
-    // 选项1：切换测试
+    // 选项1：切换10011测试
     UIAlertAction *testAction = [UIAlertAction actionWithTitle:@"切换到10011" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self saveEnvironmentAndShowRestartAlert:EnvironmentType_Test_10011];
+    }];
+
+    // 选项2：切换10004测试
+    UIAlertAction *test10004Action = [UIAlertAction actionWithTitle:@"切换到10004" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self saveEnvironmentAndShowRestartAlert:EnvironmentType_Test_10004];
     }];
 
     // 取消
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
 
     [alert addAction:testAction];
+    [alert addAction:test10004Action];
     [alert addAction:cancelAction];
 
     alert.popoverPresentationController.sourceView = sender;
