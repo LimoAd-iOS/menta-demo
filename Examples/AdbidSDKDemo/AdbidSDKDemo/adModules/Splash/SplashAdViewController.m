@@ -6,15 +6,15 @@
 //
 
 #import "SplashAdViewController.h"
-#import <AdbidSDK/AdbidSDK.h>
+#import <MentaVL48AggSDK/MentaVL48AggSDK.h>
 #import "TimeUtil.h"
 #import "AppConfig.h"
 #import "AppDelegate.h"
 #import "AdbidSplashTokenTester.h"
 
-@interface SplashAdViewController () <AdbidSplashAdDelegate>
+@interface SplashAdViewController () <MentaVL48AggSplashAdDelegate>
 
-@property (nonatomic, strong) AdbidSplashAd *splashAd;
+@property (nonatomic, strong) MentaVL48AggSplashAd *splashAd;
 @property (nonatomic, strong) UILabel *statusLabel;
 @property (nonatomic, strong) UITextField *adIdTextField;
 @property (nonatomic, strong) UISwitch *adTypeSwitch;
@@ -326,7 +326,7 @@
     self.statusLabel.text = [self statusLog: message];
     self.statusLabel.textColor = [UIColor colorWithRed:0.2 green:0.6 blue:1.0 alpha:1.0];
     [self addLog:message];
-    self.splashAd = [[AdbidSplashAd alloc] initWithSlotId:self.adIdTextField.text];
+    self.splashAd = [[MentaVL48AggSplashAd alloc] initWithSlotId:self.adIdTextField.text];
     self.splashAd.delegate = self;
     [self.splashAd loadAd];
 }
@@ -338,19 +338,19 @@
 
 - (void)runServerBidTokenConfigCostTestWithSlotId:(NSString *)slotId {
     [self loadViewIfNeeded];
-    AdbidSplashAd *testSplashAd = [[AdbidSplashAd alloc] initWithSlotId:slotId];
+    MentaVL48AggSplashAd *testSplashAd = [[MentaVL48AggSplashAd alloc] initWithSlotId:slotId];
     NSString *startLog = [NSString stringWithFormat:@"初始化成功后开始测试 requestServerBidTokenConfigBeforeLoadForSplashAd, slotId=%@", slotId ?: @""];
     NSLog(@"%@", startLog);
     [self addLog:startLog];
     [self requestServerBidTokenConfigBeforeLoadForSplashAd:testSplashAd slotId:slotId];
 }
 
-- (void)requestServerBidTokenConfigBeforeLoadForSplashAd:(AdbidSplashAd *)splashAd slotId:(NSString *)slotId {
+- (void)requestServerBidTokenConfigBeforeLoadForSplashAd:(MentaVL48AggSplashAd *)splashAd slotId:(NSString *)slotId {
     __weak typeof(self) weakSelf = self;
     CFAbsoluteTime methodStartTime = CFAbsoluteTimeGetCurrent();
     CFAbsoluteTime requestStartTime = CFAbsoluteTimeGetCurrent();
    
-    [AdbidSDKManager requestServerBidTokenConfigForPositionId:slotId completion:^(NSString * _Nullable sdkInfoConfig, NSError * _Nullable configError) {
+    [MentaVL48AggSDKManager requestServerBidTokenConfigForPositionId:slotId completion:^(NSString * _Nullable sdkInfoConfig, NSError * _Nullable configError) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (!strongSelf) {
             return;
@@ -404,7 +404,7 @@
     self.statusLabel.textColor = [UIColor colorWithRed:0.92 green:0.45 blue:0.12 alpha:1.0];
     [self addLog:message];
 
-    self.splashAd = [[AdbidSplashAd alloc] initWithSlotId:self.adIdTextField.text];
+    self.splashAd = [[MentaVL48AggSplashAd alloc] initWithSlotId:self.adIdTextField.text];
     self.splashAd.delegate = self;
     [self requestServerBidTokenConfigBeforeLoadForSplashAd:self.splashAd slotId:self.adIdTextField.text];
 }
@@ -458,9 +458,9 @@
         [self addLog:message];
         self.statusLabel.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
         
-        AdbidBidLossInfo *info = [[AdbidBidLossInfo alloc] init];
+        MentaVL48AggBidLossInfo *info = [[MentaVL48AggBidLossInfo alloc] init];
         info.winnerPrice = self.splashAd.eCPM + 10; // 模拟竞胜价格高于我方
-        info.winnerPlatform = AdbidPlatform_CSJ; // 模拟穿山甲竞胜
+        info.winnerPlatform = MentaVL48AggPlatform_CSJ; // 模拟穿山甲竞胜
         
         [self.splashAd lossNotice:info];
         NSString* message2 = [NSString stringWithFormat:@"竞败上报成功\n竞胜价格: %ld", (long)info.winnerPrice];
@@ -474,9 +474,9 @@
     }
 }
 
-// MARK: - AdbidSplashAdDelegate
+// MARK: - MentaVL48AggSplashAdDelegate
 // 广告加载成功
-- (void)splashAdDidLoad:(AdbidSplashAd *)splashAd {
+- (void)splashAdDidLoad:(MentaVL48AggSplashAd *)splashAd {
     BOOL callbackOnMainThread = [NSThread isMainThread];
     NSLog(@"开屏广告测试页加载成功回调 isMainThread=%@ 当前线程=%@",
           callbackOnMainThread ? @"YES" : @"NO",
@@ -489,7 +489,7 @@
     }];
 }
 // 广告加载失败
-- (void)splashAd:(AdbidSplashAd *)splashAd didFailToLoadWithError:(NSError *)error {
+- (void)splashAd:(MentaVL48AggSplashAd *)splashAd didFailToLoadWithError:(NSError *)error {
     [self performOnMainThread:^{
         NSString* message = [NSString stringWithFormat:@" ❌  加载失败：%@", error.localizedDescription];
         self.statusLabel.text =  [self statusLog:message] ;
@@ -498,7 +498,7 @@
     }];
 }
 // 广告展示成功
-- (void)splashAdDidShow:(AdbidSplashAd *)splashAd {
+- (void)splashAdDidShow:(MentaVL48AggSplashAd *)splashAd {
     [self performOnMainThread:^{
         NSString* message = @" 🎉  展示成功";
         self.statusLabel.text = [self statusLog:message];
@@ -508,7 +508,7 @@
 }
 
 // 广告展示失败
-- (void)splashAd:(AdbidSplashAd *)splashAd didFailToShowWithError:(NSError *)error {
+- (void)splashAd:(MentaVL48AggSplashAd *)splashAd didFailToShowWithError:(NSError *)error {
     [self performOnMainThread:^{
         NSString* message = [NSString stringWithFormat:@" ❌ 展示失败：%@", error.localizedDescription];
         self.statusLabel.text = [self statusLog: message];
@@ -520,7 +520,7 @@
 }
 
 // 广告被点击
-- (void)splashAdDidClick:(AdbidSplashAd *)splashAd {
+- (void)splashAdDidClick:(MentaVL48AggSplashAd *)splashAd {
     [self performOnMainThread:^{
         NSString* message = @"👆  广告被点击";
         self.statusLabel.text = [self statusLog:message];
@@ -530,7 +530,7 @@
 }
 
 // 广告被关闭
-- (void)splashAdDidClose:(AdbidSplashAd *)splashAd {
+- (void)splashAdDidClose:(MentaVL48AggSplashAd *)splashAd {
     [self performOnMainThread:^{
         NSString* message = @"👆  广告已关闭";
         self.statusLabel.text = [self statusLog:message];
@@ -539,7 +539,7 @@
     }];
 }
 /// 广告完成转化(关闭落地页)
-- (void)splashAdDidFinishConversion:(AdbidSplashAd *)interstitialAd interactionType:(AdbidAdRedirectionType)interactionType{
+- (void)splashAdDidFinishConversion:(MentaVL48AggSplashAd *)interstitialAd interactionType:(MentaVL48AggAdRedirectionType)interactionType{
 }
 
 - (void)destroyAd {

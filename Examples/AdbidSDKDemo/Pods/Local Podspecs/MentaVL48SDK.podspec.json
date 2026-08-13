@@ -1,0 +1,28 @@
+{
+  "name": "MentaVL48SDK",
+  "version": "1.0.0",
+  "summary": "Menta VL48 base splash SDK (local xcframework)",
+  "homepage": "https://example.local/MentaVL48SDK",
+  "license": {
+    "type": "Proprietary"
+  },
+  "authors": {
+    "Menta": "dev@local"
+  },
+  "platforms": {
+    "ios": "13.0"
+  },
+  "source": {
+    "path": "."
+  },
+  "vendored_frameworks": "MentaVL48SDK.xcframework",
+  "resources": [
+    "MVBaseSDK.bundle"
+  ],
+  "requires_arc": true,
+  "static_framework": true,
+  "pod_target_xcconfig": {
+    "OTHER_LDFLAGS": "-ObjC",
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "i386"
+  }
+}

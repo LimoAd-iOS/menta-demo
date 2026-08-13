@@ -6,7 +6,6 @@
 //
 
 #import "HMLaunchController.h"
-#import "AdbidSplashHotAD.h"
 
 @interface HMLaunchController ()
 
@@ -28,7 +27,7 @@
 }
 - (void)popSelf {
     [self.navigationController popViewControllerAnimated:YES];
-    [[AdbidSplashHotAD shared]loadOrShowSplashHotAD];
+   
 }
 
 @end

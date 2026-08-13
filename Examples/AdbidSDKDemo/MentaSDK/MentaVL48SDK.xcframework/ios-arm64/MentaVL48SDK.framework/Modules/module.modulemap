@@ -1,0 +1,6 @@
+framework module MentaVL48SDK {
+  umbrella header "MentaVL48SDK.h"
+  export *
+
+  module * { export * }
+}

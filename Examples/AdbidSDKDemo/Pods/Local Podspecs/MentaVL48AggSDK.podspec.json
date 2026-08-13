@@ -1,0 +1,28 @@
+{
+  "name": "MentaVL48AggSDK",
+  "version": "1.0.0",
+  "summary": "Menta VL48 aggregation splash SDK (local xcframework)",
+  "homepage": "https://example.local/MentaVL48AggSDK",
+  "license": {
+    "type": "Proprietary"
+  },
+  "authors": {
+    "Menta": "dev@local"
+  },
+  "platforms": {
+    "ios": "13.0"
+  },
+  "source": {
+    "path": "."
+  },
+  "vendored_frameworks": "MentaVL48AggSDK.xcframework",
+  "dependencies": {
+    "MentaVL48SDK": []
+  },
+  "requires_arc": true,
+  "static_framework": true,
+  "pod_target_xcconfig": {
+    "OTHER_LDFLAGS": "-ObjC",
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "i386"
+  }
+}

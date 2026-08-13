@@ -8,19 +8,18 @@
 #include <Foundation/Foundation.h>
 #import <AdSupport/AdSupport.h>
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
-#import <AdbidSDK/AdbidSDK.h>
+#import <MentaVL48AggSDK/MentaVL48AggSDK.h>
 #import "AdbidHomeViewController.h"
 #import "TimeUtil.h"
 #import "AdbidTabBarViewController.h"
 #import "AppConfig.h"
-#import "AdbidSplashHotAD.h"
 #import "HMLaunchController.h"
 #import "AdbidSplashTokenTester.h"
 
-@interface AppDelegate () <AdbidSplashAdDelegate>
-@property (nonatomic, strong) AdbidSplashAd *splashAd;
+@interface AppDelegate () <MentaVL48AggSplashAdDelegate>
+@property (nonatomic, strong) MentaVL48AggSplashAd *splashAd;
 @property (nonatomic, assign) BOOL isEnterForeground;
-@property (nonatomic, strong) AdbidSplashAd *startupTestSplashAd;
+@property (nonatomic, strong) MentaVL48AggSplashAd *startupTestSplashAd;
 @property (nonatomic, strong) AdbidSplashTokenTester *startupTokenTester;
 @end
 
@@ -77,13 +76,13 @@
 // MARK: - setup lm sdk
 - (void)setupAdbidAdSDK {
     
-    AdbidSDKConfiguration *configuration = [AdbidSDKConfiguration configuration];
+    MentaVL48AggSDKConfiguration *configuration = [MentaVL48AggSDKConfiguration configuration];
     configuration.appID = [AppConfig appID];
     configuration.debugMode = YES;
-    configuration.logLevel = AdbidLogLevelInfo;
+    configuration.logLevel = MentaVL48AggLogLevelInfo;
     AdCustomPermissionController* adP = [[AdCustomPermissionController alloc]init];
     configuration.adCustomController = adP;
-    NSString* sdkVersion = [AdbidSDKConfiguration sdkVersion];
+    NSString* sdkVersion = [MentaVL48AggSDKConfiguration sdkVersion];
     NSTimeInterval initStartTime = [[NSDate date] timeIntervalSince1970];
    
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -103,7 +102,7 @@
               [NSThread isMainThread] ? @"主线程" : @"子线程");
     });
     NSLog(@"领摩聚合SDK 初始化开始 version=%@ 时间=%@",sdkVersion,[TimeUtil times][0]);
-    [AdbidSDKManager startWithAsyncCompletionHandler:^(BOOL success, NSError *_Nullable error) {
+    [MentaVL48AggSDKManager startWithAsyncCompletionHandler:^(BOOL success, NSError *_Nullable error) {
         NSTimeInterval initCost = ([[NSDate date] timeIntervalSince1970] - initStartTime) * 1000.0;
         BOOL callbackOnMainThread = [NSThread isMainThread];
         NSLog(@"AdbidSDK 初始化回调 isMainThread=%@ 时间=%@ 当前线程=%@",
@@ -138,14 +137,14 @@
     if (!self.startupTokenTester) {
         self.startupTokenTester = [[AdbidSplashTokenTester alloc] init];
     }
-    self.startupTestSplashAd = [[AdbidSplashAd alloc] initWithSlotId:slotId];
+    self.startupTestSplashAd = [[MentaVL48AggSplashAd alloc] initWithSlotId:slotId];
     NSLog(@"初始化成功后开始调用 requestServerBidTokenConfigBeforeLoadForSplashAd 测试，slotId=%@ 时间=%@",
           slotId,
           [TimeUtil times][0]);
     [self requestServerBidTokenConfigBeforeLoadForSplashAd:self.startupTestSplashAd slotId:slotId];
 }
 
-- (void)requestServerBidTokenConfigBeforeLoadForSplashAd:(AdbidSplashAd *)splashAd slotId:(NSString *)slotId {
+- (void)requestServerBidTokenConfigBeforeLoadForSplashAd:(MentaVL48AggSplashAd *)splashAd slotId:(NSString *)slotId {
     __weak typeof(self) weakSelf = self;
     CFAbsoluteTime methodStartTime = CFAbsoluteTimeGetCurrent();
     CFAbsoluteTime requestStartTime = CFAbsoluteTimeGetCurrent();
@@ -171,14 +170,14 @@
 }
 
 - (void)loadSplashAd {
-    self.splashAd = [[AdbidSplashAd alloc] initWithSlotId:[AppConfig openID]];
+    self.splashAd = [[MentaVL48AggSplashAd alloc] initWithSlotId:[AppConfig openID]];
     self.splashAd.viewController = self.window.rootViewController;
     self.splashAd.delegate = self;
     [self.splashAd loadAd];
 }
 // MARK: - LMSplashAdDelegate
 // 广告加载成功
-- (void)splashAdDidLoad:(AdbidSplashAd *)splashAd {
+- (void)splashAdDidLoad:(MentaVL48AggSplashAd *)splashAd {
     BOOL callbackOnMainThread = [NSThread isMainThread];
     NSLog(@"冷启动开屏广告加载成功回调 isMainThread=%@ 时间=%@ 当前线程=%@",
           callbackOnMainThread ? @"YES" : @"NO",
@@ -190,22 +189,22 @@
 }
 
 // 广告加载失败
-- (void)splashAd:(AdbidSplashAd *)splashAd didFailToLoadWithError:(NSError *)error {
+- (void)splashAd:(MentaVL48AggSplashAd *)splashAd didFailToLoadWithError:(NSError *)error {
 }
 // 广告展示成功
-- (void)splashAdDidShow:(AdbidSplashAd *)splashAd {
+- (void)splashAdDidShow:(MentaVL48AggSplashAd *)splashAd {
 }
 
 // 广告展示失败
-- (void)splashAd:(AdbidSplashAd *)splashAd didFailToShowWithError:(NSError *)error {
+- (void)splashAd:(MentaVL48AggSplashAd *)splashAd didFailToShowWithError:(NSError *)error {
 }
 
 // 广告被点击
-- (void)splashAdDidClick:(AdbidSplashAd *)splashAd {
+- (void)splashAdDidClick:(MentaVL48AggSplashAd *)splashAd {
 }
 
 // 广告被关闭
-- (void)splashAdDidClose:(AdbidSplashAd *)splashAd {
+- (void)splashAdDidClose:(MentaVL48AggSplashAd *)splashAd {
 }
 
 - (void)removeSplashAd {

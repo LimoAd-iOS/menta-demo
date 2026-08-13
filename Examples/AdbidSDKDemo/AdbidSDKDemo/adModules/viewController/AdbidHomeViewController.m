@@ -6,12 +6,7 @@
 //
 
 #import "AdbidHomeViewController.h"
-#import "NativeAdViewController.h"
-#import "BottomNativeAdViewController.h"
-
-#import "RewardVideoViewController.h"
 #import "SplashAdViewController.h"
-#import "InterstitialViewController.h"
 
 // 导入头文件
 #import <AdSupport/AdSupport.h>
@@ -88,10 +83,10 @@
 - (void)setupButtons {
     NSArray *buttonConfigs = @[
         @{@"title" : @"开屏广告", @"subtitle" : @"Splash", @"icon" : @"sparkles", @"action" : @"splashButtonTapped:"},
-        @{@"title" : @"激励视频", @"subtitle" : @"Reward Video", @"icon" : @"play.rectangle.fill", @"action" : @"rewardVideoButtonTapped:"},
-        @{@"title" : @"插屏广告", @"subtitle" : @"Interstitial", @"icon" : @"rectangle.stack", @"action" : @"interstitialButtonTapped:"},
-        @{@"title" : @"信息流（draw）", @"subtitle" : @"Native", @"icon" : @"list.bullet.rectangle", @"action" : @"nativeButtonTapped:"},
-        @{@"title" : @"底通信息流", @"subtitle" : @"Native", @"icon" : @"list.bullet.rectangle", @"action" : @"bottomNativeFeedButtonTapped:"},
+//        @{@"title" : @"激励视频", @"subtitle" : @"Reward Video", @"icon" : @"play.rectangle.fill", @"action" : @"rewardVideoButtonTapped:"},
+//        @{@"title" : @"插屏广告", @"subtitle" : @"Interstitial", @"icon" : @"rectangle.stack", @"action" : @"interstitialButtonTapped:"},
+//        @{@"title" : @"信息流（draw）", @"subtitle" : @"Native", @"icon" : @"list.bullet.rectangle", @"action" : @"nativeButtonTapped:"},
+//        @{@"title" : @"底通信息流", @"subtitle" : @"Native", @"icon" : @"list.bullet.rectangle", @"action" : @"bottomNativeFeedButtonTapped:"},
     ];
 
     for (int i = 0; i < buttonConfigs.count; i++) {
@@ -207,23 +202,23 @@
 }
 
 - (void)rewardVideoButtonTapped:(UIButton *)sender {
-    RewardVideoViewController *rewardVideoVC = [[RewardVideoViewController alloc] init];
-    [self pushSecondLevelViewController:rewardVideoVC];
+//    RewardVideoViewController *rewardVideoVC = [[RewardVideoViewController alloc] init];
+//    [self pushSecondLevelViewController:rewardVideoVC];
 }
 
 - (void)nativeButtonTapped:(UIButton *)sender {
-    NativeAdViewController *splashVC = [[NativeAdViewController alloc] init];
-    [self pushSecondLevelViewController:splashVC];
+//    NativeAdViewController *splashVC = [[NativeAdViewController alloc] init];
+//    [self pushSecondLevelViewController:splashVC];
 }
 
 - (void)bottomNativeFeedButtonTapped:(UIButton *)sender {
-    BottomNativeAdViewController *splashVC = [[BottomNativeAdViewController alloc] init];
-    [self pushSecondLevelViewController:splashVC];
+//    BottomNativeAdViewController *splashVC = [[BottomNativeAdViewController alloc] init];
+//    [self pushSecondLevelViewController:splashVC];
 }
 
 - (void)interstitialButtonTapped:(UIButton *)sender {
-    InterstitialViewController *rewardVideoVC = [[InterstitialViewController alloc] init];
-    [self pushSecondLevelViewController:rewardVideoVC];
+//    InterstitialViewController *rewardVideoVC = [[InterstitialViewController alloc] init];
+//    [self pushSecondLevelViewController:rewardVideoVC];
 }
 
 - (void)pushSecondLevelViewController:(UIViewController *)viewController {

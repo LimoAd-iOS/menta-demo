@@ -66,30 +66,27 @@ static NSString *const kLegacySelectedPlatformsKey = @"flatform";
 #pragma mark - 获取当前环境（从本地读取）
 + (EnvironmentType)currentEnv {
     if ([[NSUserDefaults standardUserDefaults] objectForKey:kEnvironmentKey] == nil) {
-        return EnvironmentType_Test_10011;
+        return EnvironmentType_Test_10004;
     }
     EnvironmentType env = [[NSUserDefaults standardUserDefaults] integerForKey:kEnvironmentKey];
     switch (env) {
-        case EnvironmentType_Test_10011:
         case EnvironmentType_Test_10004:
             return env;
         default:
-            return EnvironmentType_Test_10011;
+            return EnvironmentType_Test_10004;
     }
 }
 
 + (NSString *)currentEnvironmentDisplayText {
     switch ([self currentEnv]) {
-        case EnvironmentType_Test_10011:     return @"10011";
         case EnvironmentType_Test_10004:     return @"10004";
-      
-        default:                             return @"10011";
+        default:                             return @"10004";
     }
 }
 
 #pragma mark - 广告平台
 + (NSArray<NSString *> *)availablePlatforms {
-    return @[@"LM",@"Ezviz"];
+    return @[@"LM"];
 }
 
 + (NSString *)selectedPlatformsKeyForCurrentEnvironment {
@@ -98,7 +95,6 @@ static NSString *const kLegacySelectedPlatformsKey = @"flatform";
 
 + (NSArray<NSString *> *)defaultPlatformsForCurrentEnvironment {
     switch ([self currentEnv]) {
-        case EnvironmentType_Test_10011:
         case EnvironmentType_Test_10004:
        
         default:
@@ -170,98 +166,60 @@ static NSString *const kLegacySelectedPlatformsKey = @"flatform";
 // MARK: - 配置
 + (NSString *)appID {
     switch ([self currentEnv]) {
-        case EnvironmentType_Test_10011:     return @"10011";
         case EnvironmentType_Test_10004:     return @"10004";
-        default: return @"10011";
+        default: return @"10004";
     }
 }
 
 + (NSString *)openID {
     NSString *platform = [self selectedPlatform];
     switch ([self currentEnv]) {
-            case EnvironmentType_Test_10011:
-                if ([platform isEqualToString:@"LM"]) {
-                    return @"MTc3OTI0ODQxNzcxNg=="; // LM
-                } else if ([platform isEqualToString:@"Ezviz"]) {
-                    return @"MTc3OTcwNjU3MTk2OA=="; // Ezviz
-                }
-                return @"MTc1MzM0MzU1MzkzOQ==";
-            case EnvironmentType_Test_10004:
+        case EnvironmentType_Test_10004:
             if ([platform isEqualToString:@"LM"]) {
                 return @"MTc4NjUzMDM0OTQ4OA=="; // LM
             }
             return @"MTc1MzM0MzU1MzkzOQ==";
-             default: return @"MTc1MzM0MzU1MzkzOQ==";
+        default: return @"MTc1MzM0MzU1MzkzOQ==";
     }
 }
 
 + (NSString *)hotID {
-    NSString *platform = [self selectedPlatform];
     switch ([self currentEnv]) {
-            case EnvironmentType_Test_10011:
-                if ([platform isEqualToString:@"LM"]) {
-                    return @"MTc3OTI0ODQxNzcxNg=="; // LM
-                } else if ([platform isEqualToString:@"Ezviz"]) {
-                    return @"MTc3OTcwNjU3MTk2OA=="; // Ezviz
-                }
-                return @"MTc1MzM0MzU1MzkzOQ==";
-            default: return @"MTc1MzM0MzU1MzkzOQ==";
+        case EnvironmentType_Test_10004:
+        default:
+            return @"MTc1MzM0MzU1MzkzOQ==";
     }
 }
 
 + (NSString *)rewardID {
-    NSString *platform = [self selectedPlatform];
     switch ([self currentEnv]) {
-            case EnvironmentType_Test_10011:
-                if ([platform isEqualToString:@"LM"]) {
-                    return @"MTc3OTI0ODQ3MDQ2OA=="; // LM
-                } else if ([platform isEqualToString:@"Ezviz"]) {
-                    return @"MTc3OTcwNjU4NDE3NQ=="; // Ezviz
-                }
-                return @"MTc1MzM0MzU1MzkzOQ==";
-            default: return @"MTc1MzM0NDk5OTk3Mw==";
+        case EnvironmentType_Test_10004:
+        default:
+            return @"MTc1MzM0NDk5OTk3Mw==";
     }
 }
 
 + (NSString *)nativeID {
-    NSString *platform = [self selectedPlatform];
     switch ([self currentEnv]) {
-            case EnvironmentType_Test_10011:
-                if ([platform isEqualToString:@"LM"]) {
-                    return @"MTc3OTI0ODQ5MDk5Mw=="; // LM
-                } else if ([platform isEqualToString:@"Ezviz"]) {
-                    return @"MTc3OTcwNjY1NzEwNw=="; // Ezviz
-                }
-                return @"MTc1MzM0MzU1MzkzOQ==";
-        default: return @"MTc1MzM0NTA2ODIxOA==";
+        case EnvironmentType_Test_10004:
+        default:
+            return @"MTc1MzM0NTA2ODIxOA==";
     }
 }
 
 + (NSString *)nativeDrawID {
-    NSString *platform = [self selectedPlatform];
     switch ([self currentEnv]) {
-            case EnvironmentType_Test_10011:
-                if ([platform isEqualToString:@"LM"]) {
-                    return @"MTc3OTI0ODUwMzQ2OA=="; // LM
-                } else if ([platform isEqualToString:@"Ezviz"]) {
-                    return @"MTc3OTcwNjY2OTU5NA=="; // Ezviz
-                }
-                return @"MTc1MzM0MzU1MzkzOQ==";
-            default: return @"MTc1MzM0NTA2ODIxOA==";
+        case EnvironmentType_Test_10004:
+        default:
+            return @"MTc1MzM0NTA2ODIxOA==";
     }
 }
 
 + (NSString *)interstitalID {
-    NSString *platform = [self selectedPlatform];
     switch ([self currentEnv]) {
-            case EnvironmentType_Test_10011:
-                if ([platform isEqualToString:@"LM"]) {
-                    return @"MTc3OTI0ODQxNzcxNg=="; // LM
-                } else if ([platform isEqualToString:@"Ezviz"]) {
-                    return @"MTc3OTcwNjU3MTk2OA=="; // Ezviz
-                }
-                return @"MTc1MzM0MzU1MzkzOQ==";
-        default: return @"MTc1MzM0MzU1MzkzOQ==";
+        case EnvironmentType_Test_10004:
+        default:
+            return @"MTc1MzM0MzU1MzkzOQ==";
     }
 }
 
