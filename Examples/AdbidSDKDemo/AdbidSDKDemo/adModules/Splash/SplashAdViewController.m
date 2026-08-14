@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UILabel *statusLabel;
 @property (nonatomic, strong) UITextField *adIdTextField;
 @property (nonatomic, strong) UISwitch *adTypeSwitch;
+@property (nonatomic, strong) UISwitch *brandBarSwitch;
 @property (nonatomic, strong) UILabel *bottomViewLabel;
 @property (nonatomic, strong) UIView *splashBrandView;
 /// 日志文本视图
@@ -86,6 +87,35 @@
     [self configurePlatformRightViewForTextField:self.adIdTextField];
     [self configureTextFieldStyle:self.adIdTextField];
     [contentView addSubview:self.adIdTextField];
+
+    UIView *brandBarOptionView = [[UIView alloc] init];
+    brandBarOptionView.backgroundColor = [UIColor whiteColor];
+    brandBarOptionView.layer.cornerRadius = 10;
+    brandBarOptionView.layer.borderWidth = 1;
+    brandBarOptionView.layer.borderColor = [UIColor colorWithWhite:0.88 alpha:1.0].CGColor;
+    brandBarOptionView.translatesAutoresizingMaskIntoConstraints = NO;
+    [contentView addSubview:brandBarOptionView];
+
+    UILabel *brandBarTitleLabel = [[UILabel alloc] init];
+    brandBarTitleLabel.text = @"品牌条";
+    brandBarTitleLabel.textColor = [UIColor colorWithRed:0.13 green:0.16 blue:0.22 alpha:1.0];
+    brandBarTitleLabel.font = [UIFont systemFontOfSize:15 weight:UIFontWeightSemibold];
+    brandBarTitleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [brandBarOptionView addSubview:brandBarTitleLabel];
+
+    UILabel *brandBarSubtitleLabel = [[UILabel alloc] init];
+    brandBarSubtitleLabel.text = @"控制开屏底部是否展示品牌条";
+    brandBarSubtitleLabel.textColor = [UIColor colorWithRed:0.46 green:0.50 blue:0.57 alpha:1.0];
+    brandBarSubtitleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightRegular];
+    brandBarSubtitleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [brandBarOptionView addSubview:brandBarSubtitleLabel];
+
+    self.brandBarSwitch = [[UISwitch alloc] init];
+    self.brandBarSwitch.on = YES;
+    self.brandBarSwitch.onTintColor = [self primaryColor];
+    self.brandBarSwitch.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.brandBarSwitch addTarget:self action:@selector(brandBarSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [brandBarOptionView addSubview:self.brandBarSwitch];
 
     // load button
     UIButton *loadButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -220,13 +250,30 @@
         [self.adIdTextField.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor constant:-20],
         [self.adIdTextField.heightAnchor constraintEqualToConstant:44],
 
-        [loadButton.topAnchor constraintEqualToAnchor:self.adIdTextField.bottomAnchor constant:16],
+        // Brand bar switch constraints
+        [brandBarOptionView.topAnchor constraintEqualToAnchor:self.adIdTextField.bottomAnchor constant:12],
+        [brandBarOptionView.leadingAnchor constraintEqualToAnchor:self.adIdTextField.leadingAnchor],
+        [brandBarOptionView.trailingAnchor constraintEqualToAnchor:self.adIdTextField.trailingAnchor],
+        [brandBarOptionView.heightAnchor constraintEqualToConstant:58],
+
+        [brandBarTitleLabel.leadingAnchor constraintEqualToAnchor:brandBarOptionView.leadingAnchor constant:14],
+        [brandBarTitleLabel.topAnchor constraintEqualToAnchor:brandBarOptionView.topAnchor constant:10],
+        [brandBarTitleLabel.trailingAnchor constraintLessThanOrEqualToAnchor:self.brandBarSwitch.leadingAnchor constant:-12],
+
+        [brandBarSubtitleLabel.leadingAnchor constraintEqualToAnchor:brandBarTitleLabel.leadingAnchor],
+        [brandBarSubtitleLabel.topAnchor constraintEqualToAnchor:brandBarTitleLabel.bottomAnchor constant:3],
+        [brandBarSubtitleLabel.trailingAnchor constraintLessThanOrEqualToAnchor:self.brandBarSwitch.leadingAnchor constant:-12],
+
+        [self.brandBarSwitch.centerYAnchor constraintEqualToAnchor:brandBarOptionView.centerYAnchor],
+        [self.brandBarSwitch.trailingAnchor constraintEqualToAnchor:brandBarOptionView.trailingAnchor constant:-14],
+
+        [loadButton.topAnchor constraintEqualToAnchor:brandBarOptionView.bottomAnchor constant:16],
       //  [loadButton.centerXAnchor constraintEqualToAnchor:contentView.centerXAnchor],
         [loadButton.leftAnchor constraintEqualToAnchor:self.adIdTextField.leftAnchor constant:10],
         [loadButton.widthAnchor constraintEqualToConstant:120],
         [loadButton.heightAnchor constraintEqualToConstant:46],
         // Show button constraints
-        [showButton.topAnchor constraintEqualToAnchor:self.adIdTextField.bottomAnchor constant:16],
+        [showButton.topAnchor constraintEqualToAnchor:brandBarOptionView.bottomAnchor constant:16],
        // [showButton.centerXAnchor constraintEqualToAnchor:contentView.centerXAnchor],
         [showButton.rightAnchor constraintEqualToAnchor:self.adIdTextField.rightAnchor constant:-10],
         [showButton.widthAnchor constraintEqualToConstant:120],
@@ -421,7 +468,7 @@
             AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
             if (appDelegate && appDelegate.window) {
                 self.splashAd.viewController = appDelegate.window.rootViewController;
-                UIView *brandView = [self splashBrandBottomViewForWindow:appDelegate.window];
+                UIView *brandView = self.brandBarSwitch.isOn ? [self splashBrandBottomViewForWindow:appDelegate.window] : nil;
                 [self.splashAd showAdToWindow:appDelegate.window bottomView:brandView];
             }
         });
@@ -431,6 +478,11 @@
         [self addLog:message];
         self.statusLabel.textColor = [UIColor colorWithRed:1.0 green:0.6 blue:0.0 alpha:1.0];
     }
+}
+
+- (void)brandBarSwitchValueChanged:(UISwitch *)sender {
+    NSString *message = sender.isOn ? @" 已开启品牌条" : @" 已关闭品牌条";
+    [self addLog:message];
 }
 
 - (UIView *)splashBrandBottomViewForWindow:(UIWindow *)window {
