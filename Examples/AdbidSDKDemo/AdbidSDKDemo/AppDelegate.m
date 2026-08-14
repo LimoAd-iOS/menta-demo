@@ -82,26 +82,16 @@
     configuration.logLevel = MentaVL48AggLogLevelInfo;
     AdCustomPermissionController* adP = [[AdCustomPermissionController alloc]init];
     configuration.adCustomController = adP;
-    NSString* sdkVersion = [MentaVL48AggSDKConfiguration sdkVersion];
     NSTimeInterval initStartTime = [[NSDate date] timeIntervalSince1970];
    
     dispatch_async(dispatch_get_main_queue(), ^{
         NSTimeInterval taskStartTime = [[NSDate date] timeIntervalSince1970];
         NSTimeInterval mainTaskWaitCost = (taskStartTime - initStartTime) * 1000.0;
         NSTimeInterval mockMainThreadTaskDuration = 2.0;
-        NSLog(@"领摩聚合SDK 初始化主线程耗时任务开始，等待耗时=%.2fms 模拟耗时=%.2fs 时间=%@ 当前线程=%@",
-              mainTaskWaitCost,
-              mockMainThreadTaskDuration,
-              [TimeUtil times][0],
-              [NSThread isMainThread] ? @"主线程" : @"子线程");
         [NSThread sleepForTimeInterval:mockMainThreadTaskDuration];
         NSTimeInterval taskExecuteCost = ([[NSDate date] timeIntervalSince1970] - taskStartTime) * 1000.0;
-        NSLog(@"领摩聚合SDK 初始化主线程耗时任务结束，执行耗时=%.2fms 时间=%@ 当前线程=%@",
-              taskExecuteCost,
-              [TimeUtil times][0],
-              [NSThread isMainThread] ? @"主线程" : @"子线程");
     });
-    NSLog(@"领摩聚合SDK 初始化开始 version=%@ 时间=%@",sdkVersion,[TimeUtil times][0]);
+   
     [MentaVL48AggSDKManager startWithAsyncCompletionHandler:^(BOOL success, NSError *_Nullable error) {
         NSTimeInterval initCost = ([[NSDate date] timeIntervalSince1970] - initStartTime) * 1000.0;
         BOOL callbackOnMainThread = [NSThread isMainThread];
