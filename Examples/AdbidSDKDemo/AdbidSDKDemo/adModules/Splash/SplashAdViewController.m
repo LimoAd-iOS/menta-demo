@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UITextField *adIdTextField;
 @property (nonatomic, strong) UISwitch *adTypeSwitch;
 @property (nonatomic, strong) UILabel *bottomViewLabel;
+@property (nonatomic, strong) UIView *splashBrandView;
 /// 日志文本视图
 @property (nonatomic, strong) UITextView *logTextView;
 @property (nonatomic, strong) AdbidSplashTokenTester *tokenTester;
@@ -420,7 +421,8 @@
             AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
             if (appDelegate && appDelegate.window) {
                 self.splashAd.viewController = appDelegate.window.rootViewController;
-                [self.splashAd showAdToWindow:appDelegate.window];
+                UIView *brandView = [self splashBrandBottomViewForWindow:appDelegate.window];
+                [self.splashAd showAdToWindow:appDelegate.window bottomView:brandView];
             }
         });
     } else {
@@ -429,6 +431,90 @@
         [self addLog:message];
         self.statusLabel.textColor = [UIColor colorWithRed:1.0 green:0.6 blue:0.0 alpha:1.0];
     }
+}
+
+- (UIView *)splashBrandBottomViewForWindow:(UIWindow *)window {
+    CGFloat width = CGRectGetWidth(window.bounds);
+    if (width <= 0) {
+        width = CGRectGetWidth([UIScreen mainScreen].bounds);
+    }
+    CGFloat height = CGRectGetHeight(window.bounds);
+    if (height <= 0) {
+        height = CGRectGetHeight([UIScreen mainScreen].bounds);
+    }
+
+    CGFloat safeAreaBottom = 0;
+    if (@available(iOS 11.0, *)) {
+        safeAreaBottom = window.safeAreaInsets.bottom;
+    }
+
+    CGFloat bottomHeight = MAX(floor(height / 5.0), 84.0 + safeAreaBottom);
+    UIView *brandView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, bottomHeight)];
+    brandView.backgroundColor = [UIColor whiteColor];
+
+    UIView *separatorView = [[UIView alloc] init];
+    separatorView.backgroundColor = [UIColor colorWithWhite:0.88 alpha:1.0];
+    separatorView.translatesAutoresizingMaskIntoConstraints = NO;
+    [brandView addSubview:separatorView];
+
+    UIView *contentView = [[UIView alloc] init];
+    contentView.translatesAutoresizingMaskIntoConstraints = NO;
+    [brandView addSubview:contentView];
+
+    UILabel *logoLabel = [[UILabel alloc] init];
+    logoLabel.text = @"A";
+    logoLabel.textColor = [UIColor whiteColor];
+    logoLabel.textAlignment = NSTextAlignmentCenter;
+    logoLabel.font = [UIFont systemFontOfSize:20 weight:UIFontWeightBold];
+    logoLabel.backgroundColor = [self primaryColor];
+    logoLabel.layer.cornerRadius = 10;
+    logoLabel.layer.masksToBounds = YES;
+    logoLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [contentView addSubview:logoLabel];
+
+    UILabel *brandTitleLabel = [[UILabel alloc] init];
+    brandTitleLabel.text = @"AdbidSDK Demo";
+    brandTitleLabel.textColor = [UIColor colorWithRed:0.13 green:0.16 blue:0.22 alpha:1.0];
+    brandTitleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightSemibold];
+    brandTitleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [contentView addSubview:brandTitleLabel];
+
+    UILabel *brandSubtitleLabel = [[UILabel alloc] init];
+    brandSubtitleLabel.text = @"品牌开屏广告";
+    brandSubtitleLabel.textColor = [UIColor colorWithRed:0.46 green:0.50 blue:0.57 alpha:1.0];
+    brandSubtitleLabel.font = [UIFont systemFontOfSize:13 weight:UIFontWeightRegular];
+    brandSubtitleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [contentView addSubview:brandSubtitleLabel];
+
+    self.bottomViewLabel = brandTitleLabel;
+    self.splashBrandView = brandView;
+
+    [NSLayoutConstraint activateConstraints:@[
+        [separatorView.topAnchor constraintEqualToAnchor:brandView.topAnchor],
+        [separatorView.leadingAnchor constraintEqualToAnchor:brandView.leadingAnchor],
+        [separatorView.trailingAnchor constraintEqualToAnchor:brandView.trailingAnchor],
+        [separatorView.heightAnchor constraintEqualToConstant:0.5],
+
+        [contentView.topAnchor constraintEqualToAnchor:brandView.topAnchor],
+        [contentView.leadingAnchor constraintEqualToAnchor:brandView.leadingAnchor constant:24],
+        [contentView.trailingAnchor constraintEqualToAnchor:brandView.trailingAnchor constant:-24],
+        [contentView.bottomAnchor constraintEqualToAnchor:brandView.bottomAnchor constant:-safeAreaBottom],
+
+        [logoLabel.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor],
+        [logoLabel.centerYAnchor constraintEqualToAnchor:contentView.centerYAnchor],
+        [logoLabel.widthAnchor constraintEqualToConstant:44],
+        [logoLabel.heightAnchor constraintEqualToConstant:44],
+
+        [brandTitleLabel.leadingAnchor constraintEqualToAnchor:logoLabel.trailingAnchor constant:12],
+        [brandTitleLabel.trailingAnchor constraintLessThanOrEqualToAnchor:contentView.trailingAnchor],
+        [brandTitleLabel.bottomAnchor constraintEqualToAnchor:contentView.centerYAnchor constant:-2],
+
+        [brandSubtitleLabel.leadingAnchor constraintEqualToAnchor:brandTitleLabel.leadingAnchor],
+        [brandSubtitleLabel.trailingAnchor constraintLessThanOrEqualToAnchor:contentView.trailingAnchor],
+        [brandSubtitleLabel.topAnchor constraintEqualToAnchor:contentView.centerYAnchor constant:2]
+    ]];
+
+    return brandView;
 }
 
 - (void)winNoticeButtonTapped:(UIButton *)sender {
